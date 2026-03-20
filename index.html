@@ -579,7 +579,7 @@
       <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
         <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
           <label style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Annual Income ($)</label>
-          <input id="calc-income" type="number" value="120000" min="0"
+          <input id="calc-income" type="number" value="80000" min="0"
             style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:clamp(14px,3vw,16px);padding:8px 12px;width:160px;outline:none;text-align:center;">
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
@@ -589,13 +589,13 @@
         </div>
       </div>
       <div style="text-align:center;">
-        <div id="calc-result" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,12vw,88px);color:var(--gold);line-height:1;letter-spacing:0.02em;">$57.69</div>
+        <div id="calc-result" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,12vw,88px);color:var(--gold);line-height:1;letter-spacing:0.02em;">$38.46</div>
         <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:4px;">Your hourly rate</div>
       </div>
     </div>
     <div class="slide-body" style="font-size:clamp(13px,3vw,16px);max-width:580px;">
-      Now ask yourself: is a 3-hour Netflix binge worth <span id="calc-binge" style="color:var(--gold);font-weight:500;">$173</span>? That's what you're trading.<br><br>
-      <strong>You don't have to grind 24/7.</strong> But once you know your number, every hour becomes a conscious choice — not a default.
+      At $60k/year working 40 hours a week, your time is worth <strong style="color:var(--gold);">$28.85/hr</strong>. A 3-hour Netflix binge? That's <strong>$87 of your time.</strong><br><br>
+      Plug in your own numbers above. Once you know your rate, every hour becomes a conscious choice — not a default. <strong>You don't have to grind 24/7</strong>, but you should decide where your hours go.
     </div>
   </div>
 
@@ -828,11 +828,8 @@
     const income = parseFloat(document.getElementById('calc-income')?.value) || 0;
     const hours = parseFloat(document.getElementById('calc-hours')?.value) || 40;
     const rate = income / (52 * hours);
-    const binge = rate * 3;
     const resultEl = document.getElementById('calc-result');
-    const bingeEl = document.getElementById('calc-binge');
     if (resultEl) resultEl.textContent = '$' + rate.toFixed(2);
-    if (bingeEl) bingeEl.textContent = '$' + Math.round(binge);
   }
   document.getElementById('calc-income')?.addEventListener('input', calcRate);
   document.getElementById('calc-hours')?.addEventListener('input', calcRate);
