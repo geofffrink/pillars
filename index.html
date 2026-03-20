@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pillars & Sentiments to Live Your Life By</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d1b2a;
+    --deep: #111927;
+    --charcoal: #1c2a3a;
+    --steel: #263548;
+    --gold: #c8a96e;
+    --gold-light: #e8c98e;
+    --ice: #a8bfd0;
+    --white: #f0f4f8;
+    --muted: #6b8299;
+    --accent-1: #4a90b8;
+    --accent-2: #c8a96e;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 180px;
+  }
+
+  /* ── SLIDE CONTAINER ── */
+  #deck {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    text-align: center;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--accent-1));
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* ── SLIDE COUNT ── */
+  #counter {
+    position: fixed; bottom: 28px; right: 36px;
+    font-size: 11px; letter-spacing: 0.2em;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    z-index: 100;
+  }
+
+  /* ── CLICK HINT ── */
+  #hint {
+    position: fixed; bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px; letter-spacing: 0.18em;
+    color: var(--muted);
+    text-transform: uppercase;
+    z-index: 100;
+    animation: pulse 2.5s ease-in-out infinite;
+    transition: opacity 0.5s ease;
+  }
+  @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:.9} }
+
+  /* ── SECTION BADGE ── */
+  .section-badge {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    padding: 6px 16px;
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .slide-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    line-height: 0.95;
+    color: var(--white);
+    letter-spacing: 0.02em;
+    margin-bottom: 28px;
+  }
+  .slide-title .highlight {
+    color: var(--gold);
+  }
+  .slide-subtitle {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(20px, 3vw, 30px);
+    color: var(--ice);
+    line-height: 1.4;
+    max-width: 680px;
+    font-weight: 400;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .slide-body {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(15px, 2vw, 19px);
+    color: var(--ice);
+    line-height: 1.7;
+    max-width: 700px;
+    font-weight: 300;
+  }
+  .slide-body strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── DIVIDER ── */
+  .gold-line {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 24px auto;
+  }
+
+  /* ── QUOTE STYLE ── */
+  .quote {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(22px, 3.5vw, 38px);
+    color: var(--gold-light);
+    line-height: 1.35;
+    max-width: 760px;
+    position: relative;
+  }
+  .quote::before {
+    content: '\201C';
+    font-size: 5em;
+    color: rgba(200,169,110,0.15);
+    position: absolute;
+    top: -0.25em; left: -0.15em;
+    line-height: 1;
+    font-family: Georgia, serif;
+  }
+
+  /* ── BIG NUMBER ── */
+  .big-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 18vw, 180px);
+    color: rgba(200,169,110,0.12);
+    position: absolute;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* ── PILLAR NUMBER ── */
+  .pillar-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(100px, 20vw, 220px);
+    color: rgba(200,169,110,0.07);
+    position: absolute;
+    line-height: 1;
+    right: 8vw;
+    bottom: -0.1em;
+    pointer-events: none;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── LIST STYLE ── */
+  .pill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 580px;
+    text-align: left;
+  }
+  .pill-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: clamp(14px, 1.8vw, 18px);
+    color: var(--ice);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .pill-list li::before {
+    content: '';
+    flex-shrink: 0;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin-top: 0.55em;
+  }
+  .pill-list li strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── COVER SLIDE ── */
+  .slide-cover {
+    background: radial-gradient(ellipse at 30% 50%, rgba(74,144,184,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 75% 20%, rgba(200,169,110,0.06) 0%, transparent 50%);
+  }
+  .cover-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .cover-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 9vw, 110px);
+    line-height: 0.9;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    margin-bottom: 30px;
+  }
+  .cover-title span { color: var(--gold); }
+  .cover-sub {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: clamp(16px, 2.2vw, 24px);
+    color: var(--ice);
+    max-width: 540px;
+    line-height: 1.5;
+  }
+
+  /* ── TOC SLIDE ── */
+  .toc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 680px;
+    margin-top: 10px;
+  }
+  .toc-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--gold);
+    padding: 20px 22px;
+    text-align: left;
+    border-radius: 2px;
+  }
+  .toc-item .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .toc-item .name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(16px, 2vw, 22px);
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .toc-bonus {
+    grid-column: 1 / -1;
+    border-left-color: var(--accent-1);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .toc-bonus .num { color: var(--accent-1); }
+
+  /* ── SECTION TRANSITION SLIDE ── */
+  .slide-section {
+    background: radial-gradient(ellipse at 50% 50%, rgba(200,169,110,0.05) 0%, transparent 70%);
+  }
+  .section-number-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(140px, 28vw, 280px);
+    color: rgba(200,169,110,0.06);
+    line-height: 1;
+    position: absolute;
+    letter-spacing: -0.02em;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .section-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 120px);
+    line-height: 0.95;
+    color: var(--white);
+    position: relative;
+  }
+
+  /* ── STAT CALLOUT ── */
+  .stat-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(200,169,110,0.2);
+    border-radius: 4px;
+    padding: 28px 40px;
+    max-width: 560px;
+  }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 10vw, 100px);
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: 0.02em;
+  }
+  .stat-label {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── CHAIN VISUAL ── */
+  .chain-row {
+    display: flex; gap: 10px; align-items: center;
+    flex-wrap: wrap; justify-content: center;
+    max-width: 600px;
+  }
+  .chain-day {
+    width: 38px; height: 38px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+  }
+  .chain-day.marked {
+    border-color: var(--gold);
+    background: rgba(200,169,110,0.1);
+    color: var(--gold);
+    font-size: 20px;
+  }
+  .chain-day.empty { color: transparent; }
+
+  /* ── CLOSING SLIDE ── */
+  .slide-closing {
+    background: radial-gradient(ellipse at 50% 40%, rgba(74,144,184,0.07) 0%, transparent 65%);
+  }
+
+  /* ── BACKGROUND ACCENTS ── */
+  .bg-accent {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* responsive */
+  @media (max-width: 640px) {
+    .slide { padding: 40px 28px; }
+    .toc-grid { grid-template-columns: 1fr; }
+    .toc-bonus { grid-column: 1; }
+  }
+
+  /* keyboard hint */
+  #keys {
+    position: fixed; bottom: 28px; left: 36px;
+    font-size: 11px; letter-spacing: 0.12em;
+    color: var(--muted);
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="counter"></div>
+<div id="hint">Click anywhere to continue</div>
+<div id="keys">← → to navigate</div>
+
+<div id="deck">
+
+  <!-- SLIDE 0: COVER -->
+  <div class="slide slide-cover active" data-slide="0">
+    <div class="bg-accent" style="width:400px;height:400px;background:radial-gradient(circle,rgba(74,144,184,0.06),transparent);top:-100px;right:-100px;"></div>
+    <div class="bg-accent" style="width:300px;height:300px;background:radial-gradient(circle,rgba(200,169,110,0.05),transparent);bottom:-80px;left:-60px;"></div>
+    <div class="cover-eyebrow">A personal manifesto</div>
+    <div class="cover-title">Pillars &<br><span>Sentiments</span><br>to Live By</div>
+    <div class="gold-line"></div>
+    <div class="cover-sub">Hard-won lessons on success, discipline, money, and the uncomfortable choices that separate who you are from who you could be.</div>
+  </div>
+
+  <!-- SLIDE 1: TABLE OF CONTENTS -->
+  <div class="slide" data-slide="1">
+    <div class="section-badge">The framework</div>
+    <div class="slide-title" style="font-size:clamp(40px,6vw,72px);margin-bottom:30px;">Four <span class="highlight">Pillars</span></div>
+    <div class="toc-grid">
+      <div class="toc-item">
+        <div class="num">Pillar 01</div>
+        <div class="name">Niching Down</div>
+      </div>
+      <div class="toc-item">
+        <div class="num">Pillar 02</div>
+        <div class="name">Eliminating Regret</div>
+      </div>
+      <div class="toc-item">
+        <div class="num">Pillar 03</div>
+        <div class="name">Delayed Gratification</div>
+      </div>
+      <div class="toc-item">
+        <div class="num">Pillar 04</div>
+        <div class="name">Execution</div>
+      </div>
+      <div class="toc-item toc-bonus">
+        <div>
+          <div class="num" style="color:var(--accent-1);">Bonus</div>
+          <div class="name" style="font-size:clamp(14px,1.6vw,18px);">The Seinfeld Strategy + Other Anecdotes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: PILLAR 1 INTRO -->
+  <div class="slide slide-section" data-slide="2">
+    <div class="section-number-big">01</div>
+    <div class="section-label">Pillar One</div>
+    <div class="section-name">Niching<br>Down</div>
+  </div>
+
+  <!-- SLIDE 3: NICHING DOWN CONTENT -->
+  <div class="slide" data-slide="3">
+    <div class="pillar-num">1</div>
+    <div class="section-badge">Pillar 01 — Niching Down</div>
+    <div class="slide-title">Master<br>of <span class="highlight">One</span></div>
+    <div class="slide-body">
+      You cannot be the expert in 50 different niches. <strong>Your clients will notice.</strong><br><br>
+      Niche down on the industries you serve <em>and</em> the services you offer. When you do, you break through the noise — and you actually deliver better results than every generalist they've worked with before.
+    </div>
+  </div>
+
+  <!-- SLIDE 4: PILLAR 2 INTRO -->
+  <div class="slide slide-section" data-slide="4">
+    <div class="section-number-big">02</div>
+    <div class="section-label">Pillar Two</div>
+    <div class="section-name">Eliminating<br>Regret</div>
+  </div>
+
+  <!-- SLIDE 5: YOU MISS 100% -->
+  <div class="slide" data-slide="5">
+    <div class="pillar-num">2</div>
+    <div class="section-badge">Pillar 02 — Eliminating Regret</div>
+    <div class="quote">You miss 100% of the shots you don't take.</div>
+    <div class="gold-line"></div>
+    <div class="slide-body">The regret of inaction is always heavier than the sting of failure. Take the shot.</div>
+  </div>
+
+  <!-- SLIDE 6: ENDURING REJECTION -->
+  <div class="slide" data-slide="6">
+    <div class="pillar-num">2</div>
+    <div class="section-badge">Pillar 02 — Eliminating Regret</div>
+    <div class="slide-title">Enduring<br><span class="highlight">Rejection</span></div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      There's a reason salespeople are the highest-compensated role in any business — <strong>they get rejected ten times a day</strong> and keep going anyway.<br><br>
+      You will not close the sale without the cold call. You will not score the date without asking.
+    </div>
+  </div>
+
+  <!-- SLIDE 7: FORGIVE YOURSELF -->
+  <div class="slide" data-slide="7">
+    <div class="pillar-num">2</div>
+    <div class="section-badge">Pillar 02 — Eliminating Regret</div>
+    <div class="slide-title">Forgive<br><span class="highlight">Yourself</span></div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      You'll say something dumb. Make a bad investment. Date the wrong person. Handle something poorly.<br><br>
+      <strong>Mourn it. Move on.</strong> The majority of people get stuck here. Don't be one of them.
+    </div>
+  </div>
+
+  <!-- SLIDE 8: PILLAR 3 INTRO -->
+  <div class="slide slide-section" data-slide="8">
+    <div class="section-number-big">03</div>
+    <div class="section-label">Pillar Three</div>
+    <div class="section-name">Delayed<br>Gratification</div>
+  </div>
+
+  <!-- SLIDE 9: MARSHMALLOW -->
+  <div class="slide" data-slide="9">
+    <div class="pillar-num">3</div>
+    <div class="section-badge">Pillar 03 — Delayed Gratification</div>
+    <div class="slide-title">The <span class="highlight">Marshmallow</span><br>Experiment</div>
+    <div class="slide-body">
+      Stanford researchers gave 4–6 year olds a choice: eat one marshmallow now, or wait and get two.<br><br>
+      They followed these kids for <strong>40+ years.</strong> The ones who waited had better SAT scores, higher educational attainment, lower BMI, and better outcomes across nearly every life measure tracked.<br><br>
+      <strong>The ability to delay gratification is critical for success.</strong>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: WHAT THIS LOOKS LIKE -->
+  <div class="slide" data-slide="10">
+    <div class="pillar-num">3</div>
+    <div class="section-badge">Pillar 03 — Delayed Gratification</div>
+    <div class="slide-title">What it<br><span class="highlight">Looks Like</span></div>
+    <ul class="pill-list">
+      <li>When my friends were out at bars in my late 20s, <strong>I was home learning WordPress.</strong></li>
+      <li>Skip the television. Get the homework done. <strong>Learn more. Get better grades.</strong></li>
+      <li>Skip the dessert at the store. <strong>Eat healthier at home.</strong></li>
+      <li>Finish the workout. <strong>Put in a few more reps. Get stronger.</strong></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 11: SHINY OBJECTS -->
+  <div class="slide" data-slide="11">
+    <div class="pillar-num">3</div>
+    <div class="section-badge">Pillar 03 — Sidebar</div>
+    <div class="slide-title">Beware<br><span class="highlight">Shiny</span> Objects</div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      Success in nearly every field requires you to ignore the easier path in favor of the harder one.<br><br>
+      <strong>You will be tempted constantly.</strong> New tools, new opportunities, new distractions. The discipline is not in starting — it's in staying.
+    </div>
+  </div>
+
+  <!-- SLIDE 12: YOUR TIME IS WORTH -->
+  <div class="slide" data-slide="12">
+    <div class="pillar-num">3</div>
+    <div class="section-badge">Pillar 03 — Sidebar</div>
+    <div class="slide-title">What Is Your<br><span class="highlight">Time Worth?</span></div>
+    <div class="stat-block" style="margin-bottom:24px;">
+      <div class="stat-number">$228</div>
+      <div class="stat-label">Per hour — Annual income ÷ 12 months ÷ actual working hours</div>
+    </div>
+    <div class="slide-body" style="font-size:clamp(13px,1.6vw,17px);">
+      Every hour you spend not working, you're paying that rate to do something else. Social media hits different when you reframe it that way.<br><br>
+      <strong>But keep your escapes.</strong> Without them, you burn out. Just be self-aware about where your hours go.
+    </div>
+  </div>
+
+  <!-- SLIDE 13: PILLAR 4 INTRO -->
+  <div class="slide slide-section" data-slide="13">
+    <div class="section-number-big">04</div>
+    <div class="section-label">Pillar Four</div>
+    <div class="section-name">Execution</div>
+  </div>
+
+  <!-- SLIDE 14: EXECUTION CONTENT -->
+  <div class="slide" data-slide="14">
+    <div class="pillar-num">4</div>
+    <div class="section-badge">Pillar 04 — Execution</div>
+    <div class="slide-title">Ideas Are<br><span class="highlight">Worthless.</span><br>Reps Win.</div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      Everyone has the idea. Almost nobody puts in the reps to make it real.<br><br>
+      <strong>Execution is the entire game.</strong> Talent, strategy, and passion all matter — but only in service of consistent daily action.
+    </div>
+  </div>
+
+  <!-- SLIDE 15: SEINFELD STRATEGY INTRO -->
+  <div class="slide slide-section" data-slide="15">
+    <div class="section-number-big" style="color:rgba(74,144,184,0.07);">★</div>
+    <div class="section-label" style="color:var(--accent-1);">Bonus</div>
+    <div class="section-name">The Seinfeld<br>Strategy</div>
+  </div>
+
+  <!-- SLIDE 16: SEINFELD STORY -->
+  <div class="slide" data-slide="16">
+    <div class="section-badge" style="color:var(--accent-1);border-color:rgba(74,144,184,0.3);">Bonus — The Seinfeld Strategy</div>
+    <div class="slide-title" style="font-size:clamp(36px,5.5vw,68px);">Jerry Seinfeld<br><span class="highlight">$820M</span> Net Worth</div>
+    <div class="slide-body">
+      An up-and-coming comic asked Seinfeld his secret.<br><br>
+      He said: <strong>"Write better jokes. The way to write better jokes is to write every day."</strong><br><br>
+      Get a big wall calendar — a full year on one page. Hang it somewhere you can't ignore. Get a red marker.
+    </div>
+  </div>
+
+  <!-- SLIDE 17: DON'T BREAK THE CHAIN -->
+  <div class="slide" data-slide="17">
+    <div class="section-badge" style="color:var(--accent-1);border-color:rgba(74,144,184,0.3);">Bonus — The Seinfeld Strategy</div>
+    <div class="slide-title" style="margin-bottom:24px;">Don't Break<br>the <span class="highlight">Chain</span></div>
+    <div class="chain-row" id="chainRow"></div>
+    <div class="gold-line"></div>
+    <div class="slide-body" style="font-size:clamp(13px,1.6vw,16px);">Every day you do the work, put a big red X. After a few days you'll have a chain. Keep it growing. <strong>Your only job is to not break the chain.</strong></div>
+  </div>
+
+  <!-- SLIDE 18: TALENT NOT PASSION -->
+  <div class="slide" data-slide="18">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title">Find Your<br><span class="highlight">Talent,</span><br>Not Your Passion</div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      You're never going to get wealthy with side hustles. <strong>You have to go all in on one thing.</strong><br><br>
+      Bill Gates didn't have a side hustle. Side hustles are a distraction from honing in on your main talent.
+    </div>
+  </div>
+
+  <!-- SLIDE 19: SAVE -->
+  <div class="slide" data-slide="19">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title">Save.<br><span class="highlight">Compound.</span><br>Repeat.</div>
+    <div class="slide-body">
+      Einstein called compound interest <strong>"the most powerful force in the universe."</strong><br><br>
+      Being rich is more about how much you <em>spend</em> than how much you make. Wealth is the gap between your income and your burn rate. Know your number. Build toward passive income that exceeds it.
+    </div>
+  </div>
+
+  <!-- SLIDE 20: SUCCESS -->
+  <div class="slide" data-slide="20">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title">The Key to<br><span class="highlight">Success</span></div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      Success is the ability to mourn and move on. Most people aren't willing to do this.<br><br>
+      <strong>Be comfortable with rejection.</strong> 90% of people aren't. The only way to score above your paygrade — personally or professionally — is to be willing to take an uncomfortable risk.<br><br>
+      Put yourself in awkward situations. Repeatedly.
+    </div>
+  </div>
+
+  <!-- SLIDE 21: DATING -->
+  <div class="slide" data-slide="21">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title">What Women<br>Find <span class="highlight">Attractive</span></div>
+    <ul class="pill-list" style="margin-top:8px;">
+      <li><strong>The ability to signal resources</strong> — present and future</li>
+      <li><strong>Intellect</strong> — and the easiest way to display intellect is humor</li>
+      <li><strong>Kindness</strong></li>
+    </ul>
+    <div class="gold-line"></div>
+    <div class="slide-subtitle" style="font-size:clamp(17px,2.2vw,24px);">If you can make a woman laugh, you can date her.</div>
+  </div>
+
+  <!-- SLIDE 22: CRISIS MANAGEMENT -->
+  <div class="slide" data-slide="22">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title">Crisis<br><span class="highlight">Management</span></div>
+    <ul class="pill-list" style="margin-top:8px;">
+      <li><strong>Acknowledge</strong> the issue. Don't minimize it.</li>
+      <li><strong>Take responsibility.</strong> People respect ownership.</li>
+      <li><strong>Overcorrect.</strong> Make it undeniably right.</li>
+    </ul>
+    <div class="gold-line"></div>
+    <div class="slide-body" style="font-size:clamp(13px,1.6vw,16px);">This works in business, relationships, and life. Three steps. Every time.</div>
+  </div>
+
+  <!-- SLIDE 23: HAPPINESS -->
+  <div class="slide" data-slide="23">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title"><span class="highlight">Happiness</span></div>
+    <div class="quote" style="font-size:clamp(20px,3vw,34px);margin-bottom:24px;">Happiness is deep and meaningful relationships.</div>
+    <div class="slide-body">
+      Another key to happiness: <strong>to be rich, but anonymous.</strong><br><br>
+      The goal isn't fame. It's freedom, depth, and the people around the table.
+    </div>
+  </div>
+
+  <!-- SLIDE 24: STORYTELLING -->
+  <div class="slide" data-slide="24">
+    <div class="section-badge">Other Anecdotes</div>
+    <div class="slide-title">Learn to<br><span class="highlight">Tell Stories</span></div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      Storytelling is one of the greatest unlocks you can develop. If you can communicate, write, and be funny — you signal intellect in every room you walk into.<br><br>
+      Churchill and Hitler moved millions with words alone — for radically different ends. <strong>Never underestimate the power of a story well told.</strong>
+    </div>
+  </div>
+
+  <!-- SLIDE 25: CLOSING -->
+  <div class="slide slide-closing" data-slide="25">
+    <div class="bg-accent" style="width:500px;height:500px;background:radial-gradient(circle,rgba(200,169,110,0.05),transparent);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="cover-eyebrow">The Bottom Line</div>
+    <div class="cover-title" style="font-size:clamp(42px,7.5vw,90px);">Do the<br><span>Hard</span><br>Things.</div>
+    <div class="gold-line"></div>
+    <div class="cover-sub">
+      Niche down. Take the shot. Wait for the second marshmallow. Execute every day. Don't break the chain.
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let transitioning = false;
+
+  const progressBar = document.getElementById('progress-bar');
+  const counter = document.getElementById('counter');
+  const hint = document.getElementById('hint');
+
+  function updateUI() {
+    progressBar.style.width = ((current / (total - 1)) * 100) + '%';
+    counter.textContent = (current + 1) + ' / ' + total;
+    hint.style.opacity = current === total - 1 ? '0' : '0.7';
+  }
+
+  function goTo(index) {
+    if (transitioning || index === current || index < 0 || index >= total) return;
+    transitioning = true;
+
+    const from = slides[current];
+    const to = slides[index];
+    const forward = index > current;
+
+    from.classList.add('exit');
+    from.classList.remove('active');
+
+    setTimeout(() => {
+      from.classList.remove('exit');
+      to.classList.add('active');
+      to.style.transform = forward ? 'translateY(30px)' : 'translateY(-30px)';
+      to.style.opacity = '0';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          to.style.transform = '';
+          to.style.opacity = '';
+          current = index;
+          updateUI();
+          setTimeout(() => { transitioning = false; }, 500);
+        });
+      });
+    }, 300);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Click to advance
+  document.addEventListener('click', next);
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); goTo(0); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); goTo(total - 1); }
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 40) { dx > 0 ? next() : prev(); }
+  });
+
+  // Build chain visual
+  const chainRow = document.getElementById('chainRow');
+  if (chainRow) {
+    for (let i = 0; i < 21; i++) {
+      const d = document.createElement('div');
+      d.className = 'chain-day' + (i < 14 ? ' marked' : '');
+      d.textContent = i < 14 ? '✕' : '';
+      chainRow.appendChild(d);
+    }
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
