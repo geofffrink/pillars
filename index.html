@@ -705,27 +705,18 @@
     <div class="pillar-num">3</div>
     <div class="section-badge">Pillar 03 — Sidebar</div>
     <div class="slide-title">What Is Your<br><span class="highlight">Time Worth?</span></div>
-    <div id="calc-block" style="background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.2);border-radius:4px;padding:clamp(14px,3vw,24px) clamp(16px,4vw,32px);max-width:540px;width:100%;margin-bottom:20px;">
-      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
-        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
-          <label style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Annual Income ($)</label>
-          <input id="calc-income" type="number" value="80000" min="0"
-            style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:clamp(14px,3vw,16px);padding:8px 12px;width:160px;outline:none;text-align:center;">
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;">
-          <label style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);">Hours / Week</label>
-          <input id="calc-hours" type="number" value="40" min="1" max="100"
-            style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:clamp(14px,3vw,16px);padding:8px 12px;width:120px;outline:none;text-align:center;">
-        </div>
-      </div>
-      <div style="text-align:center;">
-        <div id="calc-result" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,12vw,88px);color:var(--gold);line-height:1;letter-spacing:0.02em;">$38.46</div>
-        <div style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:4px;">Your hourly rate</div>
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.2);border-radius:4px;padding:clamp(16px,3vw,28px) clamp(20px,5vw,48px);max-width:560px;width:100%;margin-bottom:24px;text-align:center;">
+      <div style="font-family:'DM Sans',sans-serif;font-size:clamp(13px,3vw,16px);color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">The Formula</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(18px,4vw,32px);color:var(--white);letter-spacing:0.05em;line-height:1.4;">
+        Annual Income<br>
+        <span style="color:var(--muted);font-size:0.7em;">÷ 52 weeks</span><br>
+        <span style="color:var(--muted);font-size:0.7em;">÷ Hours worked per week</span><br>
+        <span style="color:var(--gold);">= Your hourly rate</span>
       </div>
     </div>
     <div class="slide-body" style="font-size:clamp(13px,3vw,16px);max-width:580px;">
-      At $80k/year working 40 hours a week, your time is worth <strong style="color:var(--gold);">$38.46/hr</strong>. A 3-hour Netflix binge? That's <strong>$115 of your time.</strong><br><br>
-      Plug in your own numbers above. Once you know your rate, every hour becomes a conscious choice — not a default. <strong>You don't have to grind 24/7</strong>, but you should decide where your hours go.
+      Most people have never done this math. Once you do, every hour takes on a different weight.<br><br>
+      <strong>You don't have to grind 24/7</strong> — but knowing your number makes every choice a conscious one, not a default.
     </div>
   </div>
 
@@ -834,11 +825,6 @@
         <div style="font-family:'DM Sans',sans-serif;font-size:clamp(13px,3vw,16px);color:var(--ice);font-weight:300;margin-top:4px;">Full stop.</div>
       </div>
     </div>
-    <div class="gold-line"></div>
-    <div style="font-family:'DM Sans',sans-serif;text-align:center;">
-      <div style="font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Cheat Code</div>
-      <div style="font-family:'DM Serif Display',serif;font-style:italic;font-size:clamp(17px,4vw,26px);color:var(--ice);">If you can make them laugh, you can date them.</div>
-    </div>
   </div>
 
   <!-- SLIDE 22: CRISIS MANAGEMENT -->
@@ -846,7 +832,7 @@
     <div class="section-badge">Additional Anecdotes</div>
     <div class="slide-title">Crisis<br><span class="highlight">Management</span></div>
     <ul class="pill-list" style="margin-top:8px;">
-      <li><strong>Acknowledge</strong> the issue. Don't minimize it.</li>
+      <li><strong>Acknowledge the issue.</strong> Don't minimize it.</li>
       <li><strong>Take responsibility.</strong> People respect ownership.</li>
       <li><strong>Overcorrect.</strong> Make it undeniably right.</li>
     </ul>
@@ -861,7 +847,8 @@
     <div class="gold-line"></div>
     <div class="slide-body">
       Storytelling is one of the greatest unlocks you can develop. If you can communicate, write, and be funny — you signal intellect in every room you walk into.<br><br>
-      The leaders, entrepreneurs, and creatives who move people — who build followings, close deals, and inspire action — all share one trait: <strong>they know how to tell a story that makes you feel something.</strong>
+      The leaders, entrepreneurs, and creatives who move people — who build followings, close deals, and inspire action — all share one trait:<br>
+      <strong>they know how to tell a story that makes you feel something.</strong>
     </div>
   </div>
 
@@ -1016,18 +1003,6 @@
     navMenu.classList.remove('open');
     navToggle.classList.remove('open');
   });
-
-  // Hourly rate calculator
-  function calcRate() {
-    const income = parseFloat(document.getElementById('calc-income')?.value) || 0;
-    const hours = parseFloat(document.getElementById('calc-hours')?.value) || 40;
-    const rate = income / (52 * hours);
-    const resultEl = document.getElementById('calc-result');
-    if (resultEl) resultEl.textContent = '$' + rate.toFixed(2);
-  }
-  document.getElementById('calc-income')?.addEventListener('input', calcRate);
-  document.getElementById('calc-hours')?.addEventListener('input', calcRate);
-  document.getElementById('calc-block')?.addEventListener('click', e => e.stopPropagation());
 
   // Update hint text for touch vs mouse
   if (window.matchMedia('(hover: none)').matches) {
